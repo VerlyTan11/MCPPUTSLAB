@@ -5,6 +5,9 @@ module.exports = {
     extend: {},
     colors: {
       "default-blue" : "#0559a9",
+      white : "#fff",
+      black : "#000",
+      grey : "#dcdcdc",
     },
   },
   plugins: [],
