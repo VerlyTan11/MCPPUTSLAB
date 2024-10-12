@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { View, Text, Image, Dimensions } from 'react-native';
+import { View, Text, Image, Dimensions, TouchableOpacity } from 'react-native';
 import PagerView from 'react-native-pager-view';
+import { useNavigation } from '@react-navigation/native';
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -11,6 +12,7 @@ const carouselItems = [
 ];
 
 const Body = () => {
+  const navigation = useNavigation();
   const [currentPage, setCurrentPage] = useState(0);
   const pagerRef = useRef(null);
 
@@ -42,14 +44,17 @@ const Body = () => {
     <View className="flex-1 m-4 mt-10">
       {/* Section dengan tiga icon */}
       <View className="flex-row justify-evenly pb-6">
-        <View className="items-center">
+        <TouchableOpacity
+          className="items-center"
+          onPress={() => navigation.navigate('Pulsa')} // Navigasi ke Pulsa.js
+        >
           <Image
             source={require('../assets/iphone.png')}
             className="w-8 h-8 bg-grey rounded-md"
             resizeMode="contain"
           />
           <Text>Pulsa/Data</Text>
-        </View>
+        </TouchableOpacity>
         <View className="items-center">
           <Image
             source={require('../assets/energy.png')}
