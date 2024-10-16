@@ -7,7 +7,7 @@ import Menu from './Menu';
 
 const Home = () => {
   return (
-    <View className="flex-1 bg-gray-100">
+    <View className="flex-1 bg-gray-100 pt-10">
       <Header />
       <Card />
       <Body />

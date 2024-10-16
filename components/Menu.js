@@ -1,32 +1,41 @@
 import React from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation
 
 const Menu = () => {
+  const navigation = useNavigation(); // Get the navigation object
+
   return (
     <View className="flex flex-row justify-around items-center bg-white">
       <View className="items-center">
         <Image
           source={require('../assets/home.png')}
-          className="w-6 h-6" // Ukuran untuk icon
+          className="w-6 h-6" // Icon size
           resizeMode="contain"
         />
         <Text className="mt-2 text-center">Home</Text>
       </View>
-      <View className="items-center">
+
+      <TouchableOpacity
+        className="items-center"
+        onPress={() => navigation.navigate('Transaksi')} // Navigate to Transaksi
+      >
         <Image
           source={require('../assets/file.png')}
           className="w-6 h-6"
           resizeMode="contain"
         />
         <Text className="mt-2 text-center">File</Text>
-      </View>
+      </TouchableOpacity>
+
       <View className="items-center">
         <Image
           source={require('../assets/qris.png')}
-          className="w-16 h-16" // Gambar lebih besar untuk qris
+          className="w-16 h-16" // Larger size for QRIS
           resizeMode="contain"
         />
       </View>
+
       <View className="items-center">
         <Image
           source={require('../assets/email.png')}
@@ -35,14 +44,15 @@ const Menu = () => {
         />
         <Text className="mt-2 text-center">Email</Text>
       </View>
-      <View className="items-center">
+
+      <TouchableOpacity className="items-center" onPress={() => navigation.navigate('Profile')}>
         <Image
           source={require('../assets/user.png')}
           className="w-6 h-6"
           resizeMode="contain"
         />
         <Text className="mt-2 text-center">User</Text>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };
