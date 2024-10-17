@@ -6,53 +6,61 @@ const Menu = () => {
   const navigation = useNavigation(); // Get the navigation object
 
   return (
-    <View className="flex flex-row justify-around items-center bg-white">
-      <View className="items-center">
-        <Image
-          source={require('../assets/home.png')}
-          className="w-6 h-6" // Icon size
-          resizeMode="contain"
-        />
-        <Text className="mt-2 text-center">Home</Text>
+    <View className="absolute bottom-0 left-0 right-0 bg-white p-4">
+      <View className="flex flex-row justify-around items-center">
+        <TouchableOpacity 
+          className="items-center"
+          onPress={() => navigation.navigate('Home')}
+        >
+          <Image
+            source={require('../assets/home.png')}
+            className="w-6 h-6" // Icon size
+            resizeMode="contain"
+          />
+          <Text className="mt-2 text-center">Home</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          className="items-center"
+          onPress={() => navigation.navigate('Transaksi')} // Navigate to Transaksi
+        >
+          <Image
+            source={require('../assets/file.png')}
+            className="w-6 h-6"
+            resizeMode="contain"
+          />
+          <Text className="mt-2 text-center">File</Text>
+        </TouchableOpacity>
+
+        <View className="items-center">
+          <Image
+            source={require('../assets/qris.png')}
+            className="w-16 h-16"
+            resizeMode="contain"
+          />
+        </View>
+
+        <View className="items-center">
+          <Image
+            source={require('../assets/email.png')}
+            className="w-6 h-6"
+            resizeMode="contain"
+          />
+          <Text className="mt-2 text-center">Email</Text>
+        </View>
+
+        <TouchableOpacity 
+          className="items-center" 
+          onPress={() => navigation.navigate('Profile')}
+        >
+          <Image
+            source={require('../assets/user.png')}
+            className="w-6 h-6"
+            resizeMode="contain"
+          />
+          <Text className="mt-2 text-center">User</Text>
+        </TouchableOpacity>
       </View>
-
-      <TouchableOpacity
-        className="items-center"
-        onPress={() => navigation.navigate('Transaksi')} // Navigate to Transaksi
-      >
-        <Image
-          source={require('../assets/file.png')}
-          className="w-6 h-6"
-          resizeMode="contain"
-        />
-        <Text className="mt-2 text-center">File</Text>
-      </TouchableOpacity>
-
-      <View className="items-center">
-        <Image
-          source={require('../assets/qris.png')}
-          className="w-16 h-16" // Larger size for QRIS
-          resizeMode="contain"
-        />
-      </View>
-
-      <View className="items-center">
-        <Image
-          source={require('../assets/email.png')}
-          className="w-6 h-6"
-          resizeMode="contain"
-        />
-        <Text className="mt-2 text-center">Email</Text>
-      </View>
-
-      <TouchableOpacity className="items-center" onPress={() => navigation.navigate('Profile')}>
-        <Image
-          source={require('../assets/user.png')}
-          className="w-6 h-6"
-          resizeMode="contain"
-        />
-        <Text className="mt-2 text-center">User</Text>
-      </TouchableOpacity>
     </View>
   );
 };

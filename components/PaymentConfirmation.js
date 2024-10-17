@@ -1,26 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
+import PinInputModal from './PinInputModal'; // Import the modal
 
 const PaymentConfirmation = ({ route, navigation }) => {
-  const {price, phoneNumber } = route.params;
+  const { price, phoneNumber } = route.params;
+  const [isPinModalVisible, setPinModalVisible] = useState(false);
 
   const handleConfirmation = () => {
-    navigation.navigate('Success', { price });
+    setPinModalVisible(true); // Open the PIN modal
+  };
+
+  const handleSuccess = () => {
+    setPinModalVisible(false); // Close the modal
+    navigation.navigate('Success', { price }); // Navigate to Success
   };
 
   return (
-    <View className="flex-1 bg-white p-4 pt-12">
+    <View className="flex-1 bg-white p-4 pt-12 items-center">
       <View className="flex-row items-center mb-4">
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image 
-            source={require('../assets/left.png')} 
-            className="w-6 h-6" 
-            resizeMode="contain" 
+          <Image
+            source={require('../assets/left.png')}
+            className="w-6 h-6"
+            resizeMode="contain"
           />
         </TouchableOpacity>
         <Text className="text-lg font-bold ml-4">Konfirmasi Pembayaran</Text>
       </View>
-      <View className="bg-grey rounded-md p-4 flex-row">
+
+      <View className="bg-gray-200 rounded-md p-4 flex-row">
         <Image source={require('../assets/telkomsel.png')} className="w-10 h-14" />
         <View className="px-4">
           <Text className="font-bold text-lg">Telkomsel</Text>
@@ -58,12 +66,18 @@ const PaymentConfirmation = ({ route, navigation }) => {
         <Text className="text-sm font-semibold ml-32 pl-4">{price}</Text>
       </View>
 
-      <TouchableOpacity 
+      <TouchableOpacity
         className="bg-default-blue mt-52 rounded-lg justify-center items-center"
         onPress={handleConfirmation}
       >
         <Text className="p-4 text-white">Konfirmasi</Text>
       </TouchableOpacity>
+
+      <PinInputModal
+        visible={isPinModalVisible}
+        onClose={() => setPinModalVisible(false)}
+        onSuccess={handleSuccess}
+      />
     </View>
   );
 };
