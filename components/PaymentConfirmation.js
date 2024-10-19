@@ -1,10 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import PinInputModal from './PinInputModal'; // Import the modal
 
 const PaymentConfirmation = ({ route, navigation }) => {
   const { price, phoneNumber } = route.params;
   const [isPinModalVisible, setPinModalVisible] = useState(false);
+  const [operatorImage, setOperatorImage] = useState();
+
+  // Determine operator image based on the first 4 digits of the phone number
+  useEffect(() => {
+    const prefix = phoneNumber.substring(0, 4); // Get the first 4 digits
+
+    const operatorImages = {
+      telkomsel: require('../assets/telkomsel.png'),
+      indosat: require('../assets/indosat.png'),
+      tri: require('../assets/tri.png'),
+      xl: require('../assets/xl.png'),
+      axis: require('../assets/axis.png'),
+      smartfren: require('../assets/smartfren.png'),
+    };
+
+    if (['0811', '0812', '0813', '0821', '0822', '0852', '0853'].includes(prefix)) {
+      setOperatorImage(operatorImages.telkomsel);
+    } else if (['0814', '0815', '0816', '0855', '0856', '0857', '0858'].includes(prefix)) {
+      setOperatorImage(operatorImages.indosat);
+    } else if (['0895', '0896', '0897', '0898', '0899'].includes(prefix)) {
+      setOperatorImage(operatorImages.tri);
+    } else if (['0817', '0818', '0819', '0859', '0877', '0878'].includes(prefix)) {
+      setOperatorImage(operatorImages.xl);
+    } else if (['0838', '0831', '0832', '0833'].includes(prefix)) {
+      setOperatorImage(operatorImages.axis);
+    } else if (['0881', '0882', '0883', '0884', '0885', '0886', '0887'].includes(prefix)) {
+      setOperatorImage(operatorImages.smartfren);
+    }
+  }, [phoneNumber]); // Re-run whenever phoneNumber changes
 
   const handleConfirmation = () => {
     setPinModalVisible(true); // Open the PIN modal
@@ -29,9 +58,9 @@ const PaymentConfirmation = ({ route, navigation }) => {
       </View>
 
       <View className="bg-gray-200 rounded-md p-4 flex-row">
-        <Image source={require('../assets/telkomsel.png')} className="w-10 h-14" />
+        <Image source={operatorImage} className="w-10 h-14" />
         <View className="px-4">
-          <Text className="font-bold text-lg">Telkomsel</Text>
+          <Text className="font-bold text-lg">{phoneNumber}</Text>
           <Text className="text-base mb-2">{phoneNumber}</Text>
         </View>
         <Text className="text-base ml-10 mt-3 font-semibold">{price}</Text>
