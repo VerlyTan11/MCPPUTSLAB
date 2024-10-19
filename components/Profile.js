@@ -7,7 +7,7 @@ const Profile = () => {
   const navigation = useNavigation();
   const [isPinModalVisible, setPinModalVisible] = useState(false);
   const [newPin, setNewPin] = useState('');
-  const [savedPin, setSavedPin] = useState(''); // Store the current PIN
+  const [savedPin, setSavedPin] = useState('123456'); // Set default saved PIN
 
   const handlePinChange = () => {
     if (newPin.length === 6) {
@@ -81,6 +81,16 @@ const Profile = () => {
           </View>
         </View>
       </Modal>
+
+      {/* Pass savedPin to PinInputModal */}
+      <PinInputModal
+        visible={isPinModalVisible}
+        onClose={() => setPinModalVisible(false)}
+        onSuccess={() => {
+          // Here you can do something on success
+        }}
+        savedPin={savedPin} // Pass the updated savedPin
+      />
       <Menu />
     </View>
   );

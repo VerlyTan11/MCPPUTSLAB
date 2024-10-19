@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Modal, TextInput, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Modal, Alert } from 'react-native';
 
-const PinInputModal = ({ visible, onClose, onSuccess, savedPin = '123456' }) => {
+const PinInputModal = ({ visible, onClose, onSuccess, savedPin }) => {
   const [pin, setPin] = useState('');
   const [circles, setCircles] = useState(Array(6).fill('grey')); // Circle colors
 

@@ -55,22 +55,28 @@ const Body = () => {
           />
           <Text>Pulsa/Data</Text>
         </TouchableOpacity>
-        <View className="items-center">
+        <TouchableOpacity // Tambahkan TouchableOpacity untuk navigasi Listrik
+          className="items-center"
+          onPress={() => navigation.navigate('Listrik')} // Navigasi ke tab Listrik
+        >
           <Image
             source={require('../assets/energy.png')}
             className="w-8 h-8 bg-grey rounded-md"
             resizeMode="contain"
           />
           <Text>Listrik</Text>
-        </View>
-        <View className="items-center">
+        </TouchableOpacity>
+        <TouchableOpacity // Tambahkan TouchableOpacity untuk navigasi BPJS
+          className="items-center"
+          onPress={() => navigation.navigate('BPJS')} // Navigasi ke halaman BPJS
+        >
           <Image
             source={require('../assets/healthcare.png')}
             className="w-8 h-8 bg-grey rounded-md"
             resizeMode="contain"
           />
           <Text>BPJS</Text>
-        </View>
+        </TouchableOpacity>
       </View>
 
       {/* PagerView/Slider Section */}

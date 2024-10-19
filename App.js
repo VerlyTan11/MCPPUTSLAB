@@ -10,6 +10,8 @@ import Success from './components/Success';
 import Transaksi from './components/Transaksi';
 import Profile from './components/Profile';
 import DetailTransaksi from './components/DetailTransaksi';
+import Listrik from './components/Listrik';
+import BPJS from './components/BPJS';
 
 const Stack = createStackNavigator();
 
@@ -26,6 +28,8 @@ export default function App() {
           <Stack.Screen name="Transaksi" component={Transaksi} />
           <Stack.Screen name="Profile" component={Profile} />
           <Stack.Screen name="DetailTransaksi" component={DetailTransaksi} />
+          <Stack.Screen name="Listrik" component={Listrik} />
+          <Stack.Screen name="BPJS" component={BPJS} />
         </Stack.Navigator>
       </View>
     </NavigationContainer>
