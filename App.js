@@ -9,7 +9,7 @@ import PaymentConfirmation from './components/PaymentConfirmation';
 import Success from './components/Success';
 import Transaksi from './components/Transaksi';
 import Profile from './components/Profile';
-import Menu from './components/Menu'; // Import Menu
+import DetailTransaksi from './components/DetailTransaksi';
 
 const Stack = createStackNavigator();
 
@@ -25,6 +25,7 @@ export default function App() {
           <Stack.Screen name="Success" component={Success} />
           <Stack.Screen name="Transaksi" component={Transaksi} />
           <Stack.Screen name="Profile" component={Profile} />
+          <Stack.Screen name="DetailTransaksi" component={DetailTransaksi} />
         </Stack.Navigator>
       </View>
     </NavigationContainer>

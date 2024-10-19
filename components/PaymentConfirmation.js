@@ -41,7 +41,7 @@ const PaymentConfirmation = ({ route, navigation }) => {
 
   const handleSuccess = () => {
     setPinModalVisible(false); // Close the modal
-    navigation.navigate('Success', { price }); // Navigate to Success
+    navigation.navigate('Success', { price, phoneNumber }); // Navigate to Success
   };
 
   return (

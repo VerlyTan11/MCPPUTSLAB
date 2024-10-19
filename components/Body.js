@@ -61,7 +61,7 @@ const Body = () => {
             className="w-8 h-8 bg-grey rounded-md"
             resizeMode="contain"
           />
-          <Text>Tarik Tunai</Text>
+          <Text>Listrik</Text>
         </View>
         <View className="items-center">
           <Image
@@ -69,7 +69,7 @@ const Body = () => {
             className="w-8 h-8 bg-grey rounded-md"
             resizeMode="contain"
           />
-          <Text>More</Text>
+          <Text>BPJS</Text>
         </View>
       </View>
 
