@@ -17,6 +17,7 @@ const Transaksi = ({ route }) => {
         if (savedTransactions !== null) {
           const parsedTransactions = JSON.parse(savedTransactions);
 
+          // Filter out invalid transactions
           const validTransactions = parsedTransactions.filter(
             (transaction) => transaction.price && transaction.trace && transaction.date && transaction.time
           );
@@ -42,10 +43,11 @@ const Transaksi = ({ route }) => {
   );
 
   const handleTransactionPress = (transaction) => {
-    // Navigate to the detail screen with transaction details and phoneNumber
+    console.log('Transaction details:', transaction); // Untuk melihat apakah ada `price`
     navigation.navigate('DetailTransaksi', {
       transaction,
-      phoneNumber // Pass phoneNumber ke DetailTransaksi
+      phoneNumber,
+      approvalCode: transaction.approvalCode,
     });
   };
 

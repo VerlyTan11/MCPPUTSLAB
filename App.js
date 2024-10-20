@@ -12,6 +12,7 @@ import Profile from './components/Profile';
 import DetailTransaksi from './components/DetailTransaksi';
 import Listrik from './components/Listrik';
 import BPJS from './components/BPJS';
+import Gagal from './components/Gagal';
 
 const Stack = createStackNavigator();
 
@@ -30,6 +31,7 @@ export default function App() {
           <Stack.Screen name="DetailTransaksi" component={DetailTransaksi} />
           <Stack.Screen name="Listrik" component={Listrik} />
           <Stack.Screen name="BPJS" component={BPJS} />
+          <Stack.Screen name="Gagal" component={Gagal} />
         </Stack.Navigator>
       </View>
     </NavigationContainer>

@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'; // Import 
 
 const PaymentConfirmation = ({ route, navigation }) => {
   const { label, price, phoneNumber, customerId, bpjsNumber } = route.params;
-  const [isPinModalVisible, setPinModalVisible] = useState(false);
+  const [isPinModalVisible, setPinModalVisible] = useState(false); // Perbaikan: Menggunakan isPinModalVisible
   const [operatorImage, setOperatorImage] = useState();
   const [savedPin, setSavedPin] = useState(''); // State to store the saved PIN
 
@@ -166,10 +166,11 @@ const PaymentConfirmation = ({ route, navigation }) => {
       </TouchableOpacity>
 
       <PinInputModal
-        visible={isPinModalVisible}
-        onClose={() => setPinModalVisible(false)}
+        visible={isPinModalVisible} // <--- Memperbaiki nama state di sini
+        onClose={() => setPinModalVisible(false)} // <--- Memperbaiki nama state di sini
         onSuccess={handleSuccess}
-        savedPin={savedPin} // Pass the saved PIN to PinInputModal for verification
+        savedPin={savedPin}
+        onTransactionFail={() => navigation.navigate('Gagal')}
       />
     </View>
   );

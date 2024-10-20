@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Modal, Alert } from 'react-native';
 
-const PinInputModal = ({ visible, onClose, onSuccess, savedPin }) => {
+const PinInputModal = ({ visible, onClose, onSuccess, savedPin, onTransactionFail }) => {
   const [pin, setPin] = useState('');
   const [circles, setCircles] = useState(Array(6).fill('grey')); // Circle colors
+  const [errorCount, setErrorCount] = useState(0); // Count of incorrect PIN attempts
 
   const handlePinInput = (digit) => {
     if (pin.length < 6) {
@@ -21,8 +22,15 @@ const PinInputModal = ({ visible, onClose, onSuccess, savedPin }) => {
           Alert.alert('Success', 'PIN benar!');
           onSuccess(); // Navigate to Success page
         } else {
+          setErrorCount(errorCount + 1); // Increment the error count
           Alert.alert('Error', 'PIN salah!');
-          resetPin(); // Reset PIN and circles
+
+          if (errorCount + 1 >= 3) {
+            // If errors exceed 3, call onTransactionFail
+            onTransactionFail(); 
+          } else {
+            resetPin(); // Reset PIN and circles
+          }
         }
       }
     }
