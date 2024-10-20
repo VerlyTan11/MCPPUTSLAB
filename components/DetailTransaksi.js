@@ -39,7 +39,7 @@ const DetailTransaksi = ({ route }) => {
   }, [phoneNumber]);
 
   return (
-    <ScrollView className="flex-1 p-4 pt-10">
+    <ScrollView className="flex-1 p-4 pt-10 pb-10">
       <View className="flex-row items-center mb-4">
         <TouchableOpacity onPress={() => navigation.navigate('Transaksi')}>
           <Image 
@@ -68,54 +68,52 @@ const DetailTransaksi = ({ route }) => {
       </Text>
 
       {/* Detail transaksi */}
-      <View className="mb-4">
+      <View className="flex-row justify-between mb-4">
         <Text className="font-bold">TERMINAL</Text>
         <Text className="mb-2">Success</Text>
       </View>
-      <View className="mb-4">
+      <View className="flex-row justify-between mb-4">
         <Text className="font-bold">MERCHANT</Text>
         <Text className="mb-2">{Math.floor(Math.random() * 100000000000000).toString()}</Text>
       </View>
-      <View className="mb-4">
+      <View className="flex-row justify-between mb-4">
         <Text className="font-bold">JENIS TRANSAKSI</Text>
         <Text className="mb-2">SALE</Text>
       </View>
-      <View className="mb-4">
+      <View className="flex-row justify-between mb-4">
         <Text className="font-bold">JENIS KARTU</Text>
         <Text className="mb-2">Kartu UnionPay Credit</Text>
       </View>
-      <View className="mb-4">
+      <View className="flex-row justify-between mb-4">
         <Text className="font-bold">NOMOR KARTU</Text>
         <Text className="mb-2">**********0005</Text>
       </View>
-      <View className="mb-4">
+      <View className="flex-row justify-between mb-4">
         <Text className="font-bold">TGL. TRANSAKSI</Text>
         <Text className="mb-2">{transaction ? `${transaction.date}, ${transaction.time}` : 'Tidak tersedia'}</Text>
       </View>
-      <View className="mb-4">
+      <View className="flex-row justify-between mb-4">
         <Text className="font-bold">BATCH</Text>
         <Text className="mb-2">{transaction?.trace || 'Tidak tersedia'}</Text>
       </View>
-      <View className="mb-4">
+      <View className="flex-row justify-between mb-4">
         <Text className="font-bold">TRACE NO</Text>
         <Text className="mb-2">{transaction?.trace || 'Tidak tersedia'}</Text>
       </View>
-      <View className="mb-4">
+      <View className="flex-row justify-between mb-4">
         <Text className="font-bold">REFERENCE NO</Text>
         <Text className="mb-2">{`${transaction?.trace || 'Tidak tersedia'}20`}</Text>
       </View>
-      <View className="mb-4">
+      <View className="flex-row justify-between mb-4">
         <Text className="font-bold">APPROVAL CODE</Text>
         <Text className="mb-2">{approvalCode || 'Tidak tersedia'}</Text>
       </View>
-      <View className="mb-4">
+      <View className="flex-row justify-between mb-4">
         <Text className="font-bold">TOTAL</Text>
         <Text className="mb-2 text-black">
           {transaction?.price ? transaction.price : 'Tidak tersedia'}
         </Text>
       </View>
-
-
     </ScrollView>
   );
 };
