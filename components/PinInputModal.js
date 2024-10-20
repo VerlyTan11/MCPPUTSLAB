@@ -79,7 +79,7 @@ const PinInputModal = ({ visible, onClose, onSuccess, savedPin }) => {
             className="mt-4 bg-red-500 px-6 py-3 rounded-md"
             onPress={handleDelete}
           >
-            <Text className="text-white font-bold">Hapus</Text>
+            <Text className="text-black font-bold">Hapus</Text>
           </TouchableOpacity>
 
           {/* Close Button */}
