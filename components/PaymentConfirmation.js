@@ -1,39 +1,58 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import PinInputModal from './PinInputModal'; // Import the modal
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
 
 const PaymentConfirmation = ({ route, navigation }) => {
-  const { price, phoneNumber } = route.params;
+  const { label, price, phoneNumber, customerId, bpjsNumber } = route.params;
   const [isPinModalVisible, setPinModalVisible] = useState(false);
   const [operatorImage, setOperatorImage] = useState();
+  const [savedPin, setSavedPin] = useState(''); // State to store the saved PIN
 
-  // Determine operator image based on the first 4 digits of the phone number
+  // Only apply this effect if it's Pulsa order
   useEffect(() => {
-    const prefix = phoneNumber.substring(0, 4); // Get the first 4 digits
+    if (phoneNumber) {
+      const prefix = phoneNumber.substring(0, 4); // Get the first 4 digits
+      const operatorImages = {
+        telkomsel: require('../assets/telkomsel.png'),
+        indosat: require('../assets/indosat.png'),
+        tri: require('../assets/tri.png'),
+        xl: require('../assets/xl.png'),
+        axis: require('../assets/axis.png'),
+        smartfren: require('../assets/smartfren.png'),
+      };
 
-    const operatorImages = {
-      telkomsel: require('../assets/telkomsel.png'),
-      indosat: require('../assets/indosat.png'),
-      tri: require('../assets/tri.png'),
-      xl: require('../assets/xl.png'),
-      axis: require('../assets/axis.png'),
-      smartfren: require('../assets/smartfren.png'),
-    };
-
-    if (['0811', '0812', '0813', '0821', '0822', '0852', '0853'].includes(prefix)) {
-      setOperatorImage(operatorImages.telkomsel);
-    } else if (['0814', '0815', '0816', '0855', '0856', '0857', '0858'].includes(prefix)) {
-      setOperatorImage(operatorImages.indosat);
-    } else if (['0895', '0896', '0897', '0898', '0899'].includes(prefix)) {
-      setOperatorImage(operatorImages.tri);
-    } else if (['0817', '0818', '0819', '0859', '0877', '0878'].includes(prefix)) {
-      setOperatorImage(operatorImages.xl);
-    } else if (['0838', '0831', '0832', '0833'].includes(prefix)) {
-      setOperatorImage(operatorImages.axis);
-    } else if (['0881', '0882', '0883', '0884', '0885', '0886', '0887'].includes(prefix)) {
-      setOperatorImage(operatorImages.smartfren);
+      if (['0811', '0812', '0813', '0821', '0822', '0852', '0853'].includes(prefix)) {
+        setOperatorImage(operatorImages.telkomsel);
+      } else if (['0814', '0815', '0816', '0855', '0856', '0857', '0858'].includes(prefix)) {
+        setOperatorImage(operatorImages.indosat);
+      } else if (['0895', '0896', '0897', '0898', '0899'].includes(prefix)) {
+        setOperatorImage(operatorImages.tri);
+      } else if (['0817', '0818', '0819', '0859', '0877', '0878'].includes(prefix)) {
+        setOperatorImage(operatorImages.xl);
+      } else if (['0838', '0831', '0832', '0833'].includes(prefix)) {
+        setOperatorImage(operatorImages.axis);
+      } else if (['0881', '0882', '0883', '0884', '0885', '0886', '0887'].includes(prefix)) {
+        setOperatorImage(operatorImages.smartfren);
+      }
     }
   }, [phoneNumber]); // Re-run whenever phoneNumber changes
+
+  // Load the saved PIN from AsyncStorage when the component mounts
+  useEffect(() => {
+    const loadPin = async () => {
+      try {
+        const pin = await AsyncStorage.getItem('userPin'); // Get PIN from AsyncStorage
+        if (pin) {
+          setSavedPin(pin); // Store the retrieved PIN in the state
+        }
+      } catch (error) {
+        console.log('Failed to load PIN', error);
+      }
+    };
+
+    loadPin();
+  }, []);
 
   const handleConfirmation = () => {
     setPinModalVisible(true); // Open the PIN modal
@@ -41,7 +60,7 @@ const PaymentConfirmation = ({ route, navigation }) => {
 
   const handleSuccess = () => {
     setPinModalVisible(false); // Close the modal
-    navigation.navigate('Success', { price, phoneNumber }); // Navigate to Success
+    navigation.navigate('Success', { price, phoneNumber, customerId, bpjsNumber }); // Navigate to Success
   };
 
   return (
@@ -57,14 +76,35 @@ const PaymentConfirmation = ({ route, navigation }) => {
         <Text className="text-lg font-bold ml-4">Konfirmasi Pembayaran</Text>
       </View>
 
-      <View className="bg-gray-200 rounded-md p-4 flex-row">
-        <Image source={operatorImage} className="w-10 h-14" />
-        <View className="px-4">
-          <Text className="font-bold text-lg">{phoneNumber}</Text>
-          <Text className="text-base mb-2">{phoneNumber}</Text>
+      {/* Display operator image and phone number for Pulsa */}
+      {phoneNumber && (
+        <View className="bg-gray-200 rounded-md p-4 flex-row">
+          <Image source={operatorImage} className="w-10 h-14" />
+          <View className="px-4">
+            <Text className="font-bold text-lg">{phoneNumber}</Text>
+            <Text className="text-base mb-2">{phoneNumber}</Text>
+          </View>
+          <Text className="text-base ml-10 mt-3 font-semibold">{price}</Text>
         </View>
-        <Text className="text-base ml-10 mt-3 font-semibold">{price}</Text>
-      </View>
+      )}
+
+      {/* Display customer ID for Listrik */}
+      {customerId && (
+        <View className="bg-gray-200 rounded-md p-4 flex-row items-center">
+          <Text className="font-bold text-lg mt-3">ID Pelanggan Listrik:</Text>
+          <Text className="ml-4 text-base mt-3">{customerId}</Text>
+          <Text className="text-base ml-10 mt-3 font-semibold">{price}</Text>
+        </View>
+      )}
+
+      {/* Display BPJS number for BPJS */}
+      {bpjsNumber && (
+        <View className="bg-gray-200 rounded-md p-4 flex-row items-center">
+          <Text className="font-bold text-lg mt-3">Nomor BPJS:</Text>
+          <Text className="ml-4 text-base mt-3">{bpjsNumber}</Text>
+          <Text className="text-base ml-10 mt-3 font-semibold">{price}</Text>
+        </View>
+      )}
 
       <View className="pt-8">
         <Text className="text-lg font-bold">Metode Pembayaran</Text>
@@ -81,7 +121,7 @@ const PaymentConfirmation = ({ route, navigation }) => {
       <View className="pt-8">
         <Text className="text-lg font-bold">Detail Pembayaran</Text>
         <View className="flex-row mt-3 items-center">
-          <Text>Harga Voucher</Text>
+          <Text>Harga {label}</Text>
           <Text className="text-base ml-36 pl-2">{price}</Text>
         </View>
         <View className="flex-row mt-3 items-center">
@@ -106,6 +146,7 @@ const PaymentConfirmation = ({ route, navigation }) => {
         visible={isPinModalVisible}
         onClose={() => setPinModalVisible(false)}
         onSuccess={handleSuccess}
+        savedPin={savedPin} // Pass the saved PIN to PinInputModal for verification
       />
     </View>
   );

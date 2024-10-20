@@ -2,19 +2,24 @@ import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, Modal, TextInput, Alert } from 'react-native';
 import Menu from './Menu'; // Import Menu
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
 
 const Profile = () => {
   const navigation = useNavigation();
   const [isPinModalVisible, setPinModalVisible] = useState(false);
   const [newPin, setNewPin] = useState('');
-  const [savedPin, setSavedPin] = useState('123456'); // Set default saved PIN
-
-  const handlePinChange = () => {
+  
+  // Function to handle PIN change and save it to AsyncStorage
+  const handlePinChange = async () => {
     if (newPin.length === 6) {
-      setSavedPin(newPin); // Save the new PIN
-      setNewPin(''); // Reset the input
-      setPinModalVisible(false); // Close the modal
-      Alert.alert('Success', 'PIN berhasil diatur.');
+      try {
+        await AsyncStorage.setItem('userPin', newPin); // Save the new PIN
+        setNewPin(''); // Reset input
+        setPinModalVisible(false); // Close modal
+        Alert.alert('Success', 'PIN berhasil diatur.');
+      } catch (error) {
+        Alert.alert('Error', 'Gagal menyimpan PIN.');
+      }
     } else {
       Alert.alert('Error', 'PIN harus 6 digit.');
     }
@@ -56,7 +61,7 @@ const Profile = () => {
       <Modal visible={isPinModalVisible} transparent animationType="slide">
         <View className="flex-1 justify-center items-center bg-black/50">
           <View className="bg-white p-6 rounded-md items-center w-72">
-            <Text className="text-lg font-bold mb-4">Atur PIN Baru</Text>
+            <Text className="text-lg font-bold mb-4 text-black">Atur PIN Baru</Text>
 
             <TextInput
               className="border border-gray-300 rounded-md p-2 text-center w-40 mb-4"
@@ -81,16 +86,6 @@ const Profile = () => {
           </View>
         </View>
       </Modal>
-
-      {/* Pass savedPin to PinInputModal */}
-      <PinInputModal
-        visible={isPinModalVisible}
-        onClose={() => setPinModalVisible(false)}
-        onSuccess={() => {
-          // Here you can do something on success
-        }}
-        savedPin={savedPin} // Pass the updated savedPin
-      />
       <Menu />
     </View>
   );

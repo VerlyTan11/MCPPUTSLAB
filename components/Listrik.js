@@ -24,7 +24,8 @@ const Listrik = () => {
     navigation.navigate('PaymentConfirmation', {
       label,
       price,
-      customerId,
+      customerId, // Mengirim ID pelanggan untuk preview
+      paymentType: 'Listrik' // Mengirim jenis pembayaran
     });
   };
 

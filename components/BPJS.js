@@ -6,17 +6,15 @@ const BPJS = () => {
   const navigation = useNavigation();
   const [bpjsNumber, setBpjsNumber] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [activeOption, setActiveOption] = useState('');
 
   const validateBpjsNumber = () => /^[0-9]{11}$/.test(bpjsNumber);
 
-  const handleOptionPress = (option) => {
+  const handleOptionPress = (label, price) => {
     if (!validateBpjsNumber()) {
       setErrorMessage('Nomor BPJS tidak valid. Pastikan 11 digit.');
-      setActiveOption('');
     } else {
       setErrorMessage('');
-      setActiveOption(option);
+      goToPaymentConfirmation(label, price);
     }
   };
 
@@ -24,7 +22,8 @@ const BPJS = () => {
     navigation.navigate('PaymentConfirmation', {
       label,
       price,
-      bpjsNumber,
+      bpjsNumber, // Mengirim nomor BPJS untuk preview
+      paymentType: 'BPJS' // Mengirim jenis pembayaran
     });
   };
 
@@ -61,29 +60,22 @@ const BPJS = () => {
       {/* Menu Section */}
       <View className="mt-4 flex-row justify-center space-x-4 bg-default-blue">
         <TouchableOpacity
-          className={`flex-1 max-w-[45%] rounded-lg p-4 items-center ${
-            activeOption === 'kelas1' ? 'bg-grey' : 'bg-default-blue'
-          }`}
-          onPress={() => handleOptionPress('kelas1')}
+          className="flex-1 max-w-[45%] rounded-lg p-4 items-center bg-default-blue"
+          onPress={() => handleOptionPress('Kelas 1', 'Rp. 300.000')}
         >
           <Text className="text-white text-lg">Kelas 1</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          className={`flex-1 max-w-[45%] rounded-lg p-4 items-center ${
-            activeOption === 'kelas2' ? 'bg-grey' : 'bg-default-blue'
-          }`}
-          onPress={() => handleOptionPress('kelas2')}
+          className="flex-1 max-w-[45%] rounded-lg p-4 items-center bg-default-blue"
+          onPress={() => handleOptionPress('Kelas 2', 'Rp. 200.000')}
         >
           <Text className="text-white text-lg">Kelas 2</Text>
         </TouchableOpacity>
 
-
         <TouchableOpacity
-          className={`flex-1 max-w-[45%] rounded-lg p-4 items-center ${
-            activeOption === 'kelas3' ? 'bg-grey' : 'bg-default-blue'
-          }`}
-          onPress={() => handleOptionPress('kelas3')}
+          className="flex-1 max-w-[45%] rounded-lg p-4 items-center bg-default-blue"
+          onPress={() => handleOptionPress('Kelas 3', 'Rp. 100.000')}
         >
           <Text className="text-white text-lg">Kelas 3</Text>
         </TouchableOpacity>
@@ -97,29 +89,12 @@ const BPJS = () => {
             resizeMode="contain" 
           />
           <Text className="flex-1 text-center">
-            {errorMessage || 'Isi nomor BPJS yang valid untuk menampilkan menu pembayaran.'}
+            {errorMessage || 'Isi nomor BPJS yang valid untuk memilih kelas pembayaran.'}
           </Text>
         </View>
-
-        {activeOption && (
-          <View className="mt-8">
-            <View className="flex-row justify-around bg-grey p-4 rounded-lg">
-              <OptionItem label="Kelas 1" price="Rp. 150.000" onPress={goToPaymentConfirmation} />
-              <OptionItem label="Kelas 2" price="Rp. 100.000" onPress={goToPaymentConfirmation} />
-            </View>
-          </View>
-        )}
       </View>
     </View>
   );
 };
-
-const OptionItem = ({ label, price, onPress }) => (
-  <TouchableOpacity onPress={() => onPress(label, price)} className="bg-grey rounded-sm p-4 px-10">
-    <Text className="font-semibold text-lg">{label}</Text>
-    <Text className="mt-4">Harga</Text>
-    <Text className="font-semibold">{price}</Text>
-  </TouchableOpacity>
-);
 
 export default BPJS;
