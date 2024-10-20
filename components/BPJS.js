@@ -7,14 +7,15 @@ const BPJS = () => {
   const [bpjsNumber, setBpjsNumber] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const validateBpjsNumber = () => /^[0-9]{11}$/.test(bpjsNumber);
+  const validateBpjsNumber = () => /^0[0-9]{12}$/.test(bpjsNumber); // Nomor BPJS diawali nol dan tepat 13 digit
 
-  const handleOptionPress = (label, price) => {
+  const handleOptionPress = (kelas, months) => {
+    const price = months * 50000;
     if (!validateBpjsNumber()) {
-      setErrorMessage('Nomor BPJS tidak valid. Pastikan 11 digit.');
+      setErrorMessage('Nomor BPJS tidak valid. Harus dimulai dengan 0 dan 13 digit.');
     } else {
       setErrorMessage('');
-      goToPaymentConfirmation(label, price);
+      goToPaymentConfirmation(kelas, `Rp. ${price.toLocaleString()}`);
     }
   };
 
@@ -61,21 +62,21 @@ const BPJS = () => {
       <View className="mt-4 flex-row justify-center space-x-4 bg-default-blue">
         <TouchableOpacity
           className="flex-1 max-w-[45%] rounded-lg p-4 items-center bg-default-blue"
-          onPress={() => handleOptionPress('Kelas 1', 'Rp. 300.000')}
+          onPress={() => handleOptionPress('Kelas 1', 6)} // Kelas 1 untuk 6 bulan
         >
           <Text className="text-white text-lg">Kelas 1</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           className="flex-1 max-w-[45%] rounded-lg p-4 items-center bg-default-blue"
-          onPress={() => handleOptionPress('Kelas 2', 'Rp. 200.000')}
+          onPress={() => handleOptionPress('Kelas 2', 4)} // Kelas 2 untuk 4 bulan
         >
           <Text className="text-white text-lg">Kelas 2</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           className="flex-1 max-w-[45%] rounded-lg p-4 items-center bg-default-blue"
-          onPress={() => handleOptionPress('Kelas 3', 'Rp. 100.000')}
+          onPress={() => handleOptionPress('Kelas 3', 2)} // Kelas 3 untuk 2 bulan
         >
           <Text className="text-white text-lg">Kelas 3</Text>
         </TouchableOpacity>

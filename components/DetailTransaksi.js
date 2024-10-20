@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { FlatList } from 'react-native-gesture-handler';
 
 const DetailTransaksi = ({ route }) => {
   const { transaction, approvalCode, phoneNumber } = route.params;
@@ -36,7 +37,7 @@ const DetailTransaksi = ({ route }) => {
   }, [phoneNumber]);
 
   return (
-    <View className="flex-1 bg-white p-4 pt-10">
+    <FlatList className="flex-1 bg-white p-4 pt-10">
         <View className="flex-row items-center mb-4">
             <TouchableOpacity onPress={() => navigation.navigate('Transaksi')}>
             <Image 
@@ -101,7 +102,7 @@ const DetailTransaksi = ({ route }) => {
             <Text className="font-bold">TOTAL</Text>
             <Text className="mb-2">{transaction.price}</Text>
         </View>
-    </View>
+    </FlatList>
   );
 };
 

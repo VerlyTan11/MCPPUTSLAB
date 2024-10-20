@@ -58,9 +58,28 @@ const PaymentConfirmation = ({ route, navigation }) => {
     setPinModalVisible(true); // Open the PIN modal
   };
 
-  const handleSuccess = () => {
+  const handleSuccess = async () => {
     setPinModalVisible(false); // Close the modal
-    navigation.navigate('Success', { price, phoneNumber, customerId, bpjsNumber }); // Navigate to Success
+
+    const transaction = {
+      id: Date.now().toString(), // Unique transaction ID
+      trace: Math.floor(Math.random() * 1000000).toString().padStart(6, '0'), // Random trace number
+      date: new Date().toLocaleDateString(),
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      price,
+    };
+
+    // Save the transaction to AsyncStorage
+    try {
+      const savedTransactions = await AsyncStorage.getItem('transactions');
+      const transactions = savedTransactions ? JSON.parse(savedTransactions) : [];
+      transactions.push(transaction);
+      await AsyncStorage.setItem('transactions', JSON.stringify(transactions));
+      
+      navigation.navigate('Success', { price, phoneNumber, customerId, bpjsNumber }); // Navigate to Success
+    } catch (error) {
+      console.error('Error saving transaction:', error);
+    }
   };
 
   return (
@@ -78,7 +97,7 @@ const PaymentConfirmation = ({ route, navigation }) => {
 
       {/* Display operator image and phone number for Pulsa */}
       {phoneNumber && (
-        <View className="bg-gray-200 rounded-md p-4 flex-row">
+        <View className="bg-grey rounded-md p-4 flex-row">
           <Image source={operatorImage} className="w-10 h-14" />
           <View className="px-4">
             <Text className="font-bold text-lg">{phoneNumber}</Text>
@@ -90,19 +109,23 @@ const PaymentConfirmation = ({ route, navigation }) => {
 
       {/* Display customer ID for Listrik */}
       {customerId && (
-        <View className="bg-gray-200 rounded-md p-4 flex-row items-center">
-          <Text className="font-bold text-lg mt-3">ID Pelanggan Listrik:</Text>
-          <Text className="ml-4 text-base mt-3">{customerId}</Text>
-          <Text className="text-base ml-10 mt-3 font-semibold">{price}</Text>
+        <View className="bg-grey rounded-md p-4 flex-row items-center">
+          <View className="flex-col flex-1">
+            <Text className="font-bold text-lg mt-3">ID Pelanggan Listrik:</Text>
+            <Text className="text-base mt-3">{customerId}</Text>
+          </View>
+          <Text className="text-base mt-3 font-semibold">{price}</Text>
         </View>
       )}
 
       {/* Display BPJS number for BPJS */}
       {bpjsNumber && (
-        <View className="bg-gray-200 rounded-md p-4 flex-row items-center">
-          <Text className="font-bold text-lg mt-3">Nomor BPJS:</Text>
-          <Text className="ml-4 text-base mt-3">{bpjsNumber}</Text>
-          <Text className="text-base ml-10 mt-3 font-semibold">{price}</Text>
+        <View className="bg-grey rounded-md p-4 flex-row items-center">
+          <View className="flex-col flex-1">
+            <Text className="font-bold text-lg mt-3">Nomor BPJS:</Text>
+            <Text className="text-base mt-3">{bpjsNumber}</Text>
+          </View>
+          <Text className="text-base mt-3 font-semibold">{price}</Text>
         </View>
       )}
 

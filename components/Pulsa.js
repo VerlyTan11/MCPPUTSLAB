@@ -8,11 +8,16 @@ const Pulsa = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [activeOption, setActiveOption] = useState('');
 
-  const validatePhoneNumber = () => /^[0-9]{10,12}$/.test(phoneNumber);
+  const validatePhoneNumber = () => {
+    const regex = /^08[1-9][0-9]{8,11}$/; // Validasi nomor telepon diawali 08, minimal 10 digit, maksimal 13 digit
+    const validOperators = ['081', '082', '083', '085', '087', '089']; // Prefix operator resmi
+    const prefix = phoneNumber.slice(0, 3);
+    return regex.test(phoneNumber) && validOperators.includes(prefix);
+  };
 
   const handleOptionPress = (option) => {
     if (!validatePhoneNumber()) {
-      setErrorMessage('Nomor telepon tidak valid. Silakan periksa kembali.');
+      setErrorMessage('Nomor telepon tidak valid. Harus dimulai dengan 08 dan prefix operator resmi.');
       setActiveOption('');
     } else {
       setErrorMessage('');
@@ -30,7 +35,6 @@ const Pulsa = () => {
 
   return (
     <View className="flex-1 bg-white p-4 pt-12">
-      {/* Header Section */}
       <View className="flex-row items-center mb-4">
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image 
@@ -42,7 +46,6 @@ const Pulsa = () => {
         <Text className="text-lg font-bold ml-4">Pulsa & Paket Data</Text>
       </View>
 
-      {/* Input Field Section */}
       <View className="flex-row items-center border border-gray-300 rounded-lg p-2 mb-4">
         <TextInput
           placeholder="Masukkan nomor telepon"
@@ -58,11 +61,10 @@ const Pulsa = () => {
         />
       </View>
 
-      {/* Menu Section */}
       <View className="mt-4 flex-row justify-center space-x-4 bg-default-blue">
         <TouchableOpacity
           className={`flex-1 max-w-[45%] rounded-lg p-4 items-center ${
-            activeOption === 'pulsa' ? 'bg-default-blue' : 'bg-grey'
+            activeOption === 'pulsa' ? 'bg-grey' : 'bg-default-blue'
           }`}
           onPress={() => handleOptionPress('pulsa')}
         >
@@ -71,7 +73,7 @@ const Pulsa = () => {
 
         <TouchableOpacity
           className={`flex-1 max-w-[45%] rounded-lg p-4 items-center ${
-            activeOption === 'data' ? 'bg-default-blue' : 'bg-grey'
+            activeOption === 'data' ? 'bg-grey' : 'bg-default-blue'
           }`}
           onPress={() => handleOptionPress('data')}
         >
@@ -87,7 +89,7 @@ const Pulsa = () => {
             resizeMode="contain" 
           />
           <Text className="flex-1 text-center">
-            {errorMessage || 'Isi ID Pelanggan yang valid untuk menampilkan menu pembelian.'}
+            {errorMessage || 'Isi nomor telepon yang valid untuk menampilkan menu pembelian.'}
           </Text>
         </View>
 

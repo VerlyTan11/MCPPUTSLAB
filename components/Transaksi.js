@@ -1,34 +1,41 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TextInput, FlatList, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, FlatList, TouchableOpacity, Image } from 'react-native';
 import Menu from './Menu'; // Import Menu
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
 
 const Transaksi = ({ route }) => {
   const [transactions, setTransactions] = useState([]);
   const [searchText, setSearchText] = useState('');
   const navigation = useNavigation();
   const phoneNumber = route.params?.phoneNumber;
-  const traceNumberRef = useRef(1); // Ref to keep track of trace number
-  const approvalCodeRef = useRef(100000); // Ref to keep track of approval codes
 
   useEffect(() => {
-    const generateTransactions = () => {
-      return Array.from({ length: 10 }).map((_, i) => {
-        const trace = traceNumberRef.current.toString().padStart(6, '0');
-        traceNumberRef.current += 1;
+    const fetchTransactions = async () => {
+      try {
+        const savedTransactions = await AsyncStorage.getItem('transactions');
+        if (savedTransactions !== null) {
+          const parsedTransactions = JSON.parse(savedTransactions);
 
-        return {
-          id: i.toString(),
-          trace,
-          date: new Date().toLocaleDateString(),
-          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          price: `Rp. ${Math.floor(Math.random() * 50000 + 10000).toLocaleString()}`,
-        };
-      });
+          const validTransactions = parsedTransactions.filter(
+            (transaction) => transaction.price && transaction.trace && transaction.date && transaction.time
+          );
+
+          setTransactions(validTransactions); // Set transaksi valid
+        }
+      } catch (error) {
+        console.error('Error fetching transactions from storage:', error);
+      }
     };
 
-    setTransactions(generateTransactions());
-  }, []);
+    // Fetch transactions when screen is focused
+    const unsubscribe = navigation.addListener('focus', () => {
+      fetchTransactions();
+    });
+
+    // Cleanup the listener on component unmount
+    return unsubscribe;
+  }, [navigation]);
 
   const filteredTransactions = transactions.filter((t) =>
     t.trace.includes(searchText)
@@ -38,10 +45,8 @@ const Transaksi = ({ route }) => {
     // Navigate to the detail screen with transaction details and phoneNumber
     navigation.navigate('DetailTransaksi', {
       transaction,
-      approvalCode: approvalCodeRef.current,
       phoneNumber // Pass phoneNumber ke DetailTransaksi
     });
-    approvalCodeRef.current += 1; // Increment the approval code for next transaction
   };
 
   return (
@@ -73,7 +78,10 @@ const Transaksi = ({ route }) => {
             </TouchableOpacity>
           )}
           ListEmptyComponent={
-            <Text className="text-center mt-4">Tidak ada transaksi ditemukan.</Text>
+            <View className="justify-center items-center">
+              <Image source={require('../assets/sticky-notes.png')} />
+              <Text className="text-center mt-4">Belum ada transaksi dilakukan.</Text>
+            </View>
           }
           contentContainerStyle={{ paddingBottom: 100 }}
         />

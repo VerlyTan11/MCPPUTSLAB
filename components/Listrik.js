@@ -8,11 +8,11 @@ const Listrik = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [activeOption, setActiveOption] = useState('');
 
-  const validateCustomerId = () => /^[0-9]{6}$/.test(customerId);
+  const validateCustomerId = () => /^[1-9][0-9]{5,11}$/.test(customerId); // ID Pelanggan PLN diawali angka selain nol dan maksimal 12 digit
 
   const handleOptionPress = (option) => {
     if (!validateCustomerId()) {
-      setErrorMessage('ID pelanggan tidak valid. Harus 6 digit.');
+      setErrorMessage('ID pelanggan tidak valid.');
       setActiveOption('');
     } else {
       setErrorMessage('');
