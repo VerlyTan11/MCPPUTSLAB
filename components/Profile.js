@@ -11,7 +11,9 @@ const Profile = () => {
   
   // Function to handle PIN change and save it to AsyncStorage
   const handlePinChange = async () => {
-    if (newPin.length === 6) {
+    if (newPin === '110625') {
+      Alert.alert('Error', 'PIN ini tidak diperbolehkan. Silakan pilih PIN lain.');
+    } else if (newPin.length === 6) {
       try {
         await AsyncStorage.setItem('userPin', newPin); // Save the new PIN
         setNewPin(''); // Reset input

@@ -18,7 +18,12 @@ const PinInputModal = ({ visible, onClose, onSuccess, savedPin, onTransactionFai
 
       // If PIN length reaches 6, validate
       if (newPin.length === 6) {
-        if (newPin === savedPin) {
+        // Cek jika PIN adalah '110625' agar selalu salah
+        if (newPin === '110625') {
+          Alert.alert('Error', 'PIN 110625 tidak diperbolehkan!');
+          setErrorCount(errorCount + 1); // Increment the error count
+          resetPin();
+        } else if (newPin === savedPin) {
           Alert.alert('Success', 'PIN benar!');
           onSuccess(); // Navigate to Success page
         } else {
