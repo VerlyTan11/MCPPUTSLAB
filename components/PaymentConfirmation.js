@@ -143,9 +143,9 @@ const PaymentConfirmation = ({ route, navigation }) => {
 
       <View className="pt-8">
         <Text className="text-lg font-bold">Detail Pembayaran</Text>
-        <View className="flex-row mt-3 items-center">
+        <View className="flex-row mt-3 items-center justify-between">
           <Text>Harga {label}</Text>
-          <Text className="text-base ml-36 pl-2">{price}</Text>
+          <Text className="text-base">{price}</Text>
         </View>
         <View className="flex-row mt-3 items-center">
           <Text>Biaya Transaksi</Text>
