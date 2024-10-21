@@ -1,5 +1,5 @@
-import React from 'react';
-import { View } from 'react-native';
+import React, { useContext } from 'react';
+import { View, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Splash from './components/Splash';
@@ -13,13 +13,19 @@ import DetailTransaksi from './components/DetailTransaksi';
 import Listrik from './components/Listrik';
 import BPJS from './components/BPJS';
 import Gagal from './components/Gagal';
+import { ThemeProvider, ThemeContext } from './components/ThemeContext'; // Import ThemeContext
 
 const Stack = createStackNavigator();
 
-export default function App() {
+const AppNavigator = () => {
+  const { isDarkMode } = useContext(ThemeContext); // Access the dark mode status
+
   return (
     <NavigationContainer>
-      <View className="flex-1">
+      <View className={`flex-1 ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
+        {/* Apply StatusBar color based on theme */}
+        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+        
         <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Splash" component={Splash} />
           <Stack.Screen name="Home" component={Home} />
@@ -35,5 +41,13 @@ export default function App() {
         </Stack.Navigator>
       </View>
     </NavigationContainer>
+  );
+};
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <AppNavigator />
+    </ThemeProvider>
   );
 }

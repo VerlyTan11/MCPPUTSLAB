@@ -1,13 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ThemeContext } from './ThemeContext'; // Import ThemeContext
 
 const Gagal = ({ route, navigation }) => {
-  const { price, trace, date, time } = route.params || {}; // Tambahkan fallback ke objek kosong
+  const { price, trace, date, time } = route.params || {};
+  const { isDarkMode } = useContext(ThemeContext); // Mendapatkan status dark mode
 
-  // Simpan transaksi gagal di AsyncStorage
   useEffect(() => {
-    if (price && trace && date && time) { // Pastikan semua parameter ada
+    if (price && trace && date && time) {
       const saveFailedTransaction = async () => {
         try {
           const savedTransactions = await AsyncStorage.getItem('transactions');
@@ -16,11 +17,11 @@ const Gagal = ({ route, navigation }) => {
           // Tambahkan transaksi gagal
           transactions.push({
             id: Date.now().toString(), // Unique transaction ID
-            trace, // Menggunakan trace dari params
-            date, // Menggunakan date dari params
-            time, // Menggunakan time dari params
-            price, // Menggunakan price dari params
-            status: 'failed', // Status untuk transaksi gagal
+            trace,
+            date,
+            time,
+            price,
+            status: 'failed',
           });
 
           await AsyncStorage.setItem('transactions', JSON.stringify(transactions));
@@ -34,12 +35,14 @@ const Gagal = ({ route, navigation }) => {
   }, [price, trace, date, time]);
 
   return (
-    <View className="flex-1 bg-white justify-center items-center p-4">
+    <View className={`flex-1 ${isDarkMode ? 'bg-black' : 'bg-white'} justify-center items-center p-4`}>
       {/* Gambar sticky-notes */}
       <Image source={require('../assets/sticky-notes.png')} style={{ width: 100, height: 100 }} />
       
-      <Text className="text-lg font-bold mt-4">Transaksi Gagal</Text>
-      <Text className="mt-4 text-center">Silakan periksa kembali transaksi Anda.</Text>
+      <Text className={`text-lg font-bold mt-4 ${isDarkMode ? 'text-white' : 'text-black'}`}>Transaksi Gagal</Text>
+      <Text className={`mt-4 text-center ${isDarkMode ? 'text-white' : 'text-black'}`}>
+        Silakan periksa kembali transaksi Anda.
+      </Text>
 
       {/* Tombol untuk kembali ke halaman Transaksi */}
       <TouchableOpacity

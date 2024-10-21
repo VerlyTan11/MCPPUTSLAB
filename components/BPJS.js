@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, TextInput, Image, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { ThemeContext } from './ThemeContext'; // Import ThemeContext
 
 const BPJS = () => {
   const navigation = useNavigation();
@@ -8,6 +9,7 @@ const BPJS = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [selectedClass, setSelectedClass] = useState(null); // Untuk menyimpan kelas yang dipilih
   const [months, setMonths] = useState(null); // Menyimpan jumlah bulan yang dipilih
+  const { isDarkMode } = useContext(ThemeContext); // Mengakses status dark mode
 
   // Daftar harga per bulan per kelas
   const classPrices = {
@@ -48,7 +50,7 @@ const BPJS = () => {
   };
 
   return (
-    <View className="flex-1 bg-white p-4 pt-12">
+    <View className={`flex-1 p-4 pt-12 ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
       {/* Header Section */}
       <View className="flex-row items-center mb-4">
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -58,14 +60,14 @@ const BPJS = () => {
             resizeMode="contain" 
           />
         </TouchableOpacity>
-        <Text className="text-lg font-bold ml-4">Pembayaran BPJS</Text>
+        <Text className={`text-lg font-bold ml-4 ${isDarkMode ? 'text-white' : 'text-black'}`}>Pembayaran BPJS</Text>
       </View>
 
       {/* Input Field Section */}
-      <View className="flex-row items-center border border-gray-300 rounded-lg p-2 mb-4">
+      <View className={`flex-row items-center border border-grey rounded-lg p-2 mb-4 ${isDarkMode ? 'bg-grey' : 'bg-white'}`}>
         <TextInput
           placeholder="Masukkan nomor BPJS"
-          className="flex-1 text-base p-2"
+          className={`flex-1 text-base p-2 ${isDarkMode ? 'text-white' : 'text-black'}`}
           keyboardType="numeric"
           value={bpjsNumber}
           onChangeText={(text) => setBpjsNumber(text)}
@@ -104,7 +106,7 @@ const BPJS = () => {
       {/* Month Selection Section */}
       {selectedClass && (
         <View className="mt-4">
-          <Text className="text-lg font-bold text-center">Pilih Jumlah Bulan</Text>
+          <Text className={`text-lg font-bold text-center ${isDarkMode ? 'text-white' : 'text-black'}`}>Pilih Jumlah Bulan</Text>
 
           <View className="flex-row justify-center space-x-4 mt-4">
             <TouchableOpacity
@@ -142,13 +144,13 @@ const BPJS = () => {
 
       {/* Error Message Section */}
       <View className="flex-1 mt-8">
-        <View className="flex-row bg-grey rounded-md p-4 items-center">
+        <View className={`flex-row rounded-md p-4 items-center ${isDarkMode ? 'bg-gray-800' : 'bg-grey'}`}>
           <Image 
             source={require('../assets/contact-form.png')} 
             className="w-6 h-6 mr-2" 
             resizeMode="contain" 
           />
-          <Text className="flex-1 text-center">
+          <Text className={`flex-1 text-center ${isDarkMode ? 'text-white' : 'text-black'}`}>
             {errorMessage || 'Isi nomor BPJS yang valid dan pilih kelas serta jumlah bulan.'}
           </Text>
         </View>

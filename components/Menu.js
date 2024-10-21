@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native'; // Import useNavigation
+import { ThemeContext } from './ThemeContext'; // Pastikan untuk menyesuaikan path
 
 const Menu = () => {
   const navigation = useNavigation(); // Get the navigation object
+  const { isDarkMode } = useContext(ThemeContext); // Ambil isDarkMode dari ThemeContext
 
   return (
-    <View className="absolute bottom-0 left-0 right-0 bg-white p-4">
+    <View className={`absolute bottom-0 left-0 right-0 ${isDarkMode ? 'bg-black' : 'bg-white'} p-4`}>
       <View className="flex flex-row justify-around items-center">
         <TouchableOpacity 
           className="items-center"
@@ -17,7 +19,7 @@ const Menu = () => {
             className="w-6 h-6" // Icon size
             resizeMode="contain"
           />
-          <Text className="mt-2 text-center">Home</Text>
+          <Text className={`mt-2 text-center ${isDarkMode ? 'text-white' : 'text-black'}`}>Home</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -29,7 +31,7 @@ const Menu = () => {
             className="w-6 h-6"
             resizeMode="contain"
           />
-          <Text className="mt-2 text-center">File</Text>
+          <Text className={`mt-2 text-center ${isDarkMode ? 'text-white' : 'text-black'}`}>File</Text>
         </TouchableOpacity>
 
         <View className="items-center">
@@ -46,7 +48,7 @@ const Menu = () => {
             className="w-6 h-6"
             resizeMode="contain"
           />
-          <Text className="mt-2 text-center">Email</Text>
+          <Text className={`mt-2 text-center ${isDarkMode ? 'text-white' : 'text-black'}`}>Email</Text>
         </View>
 
         <TouchableOpacity 
@@ -58,7 +60,7 @@ const Menu = () => {
             className="w-6 h-6"
             resizeMode="contain"
           />
-          <Text className="mt-2 text-center">User</Text>
+          <Text className={`mt-2 text-center ${isDarkMode ? 'text-white' : 'text-black'}`}>User</Text>
         </TouchableOpacity>
       </View>
     </View>

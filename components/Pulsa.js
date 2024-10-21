@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, TextInput, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { ThemeContext } from './ThemeContext'; // Pastikan untuk menyesuaikan path
 
 const Pulsa = () => {
   const navigation = useNavigation();
   const [phoneNumber, setPhoneNumber] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [activeOption, setActiveOption] = useState('');
+  const { isDarkMode } = useContext(ThemeContext); // Access Theme Context
+
 
   const validatePhoneNumber = () => {
     const regex = /^08[1-9][0-9]{8,11}$/; // Validasi nomor telepon diawali 08, minimal 10 digit, maksimal 13 digit
@@ -34,8 +37,8 @@ const Pulsa = () => {
   };
 
   return (
-    <View className="flex-1 bg-white p-4 pt-12">
-      <View className="flex-row items-center mb-4">
+    <View className={`flex-1 p-4 pt-12 ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
+      <View className={`flex-row items-center mb-4 ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image 
             source={require('../assets/left.png')} 
@@ -43,13 +46,13 @@ const Pulsa = () => {
             resizeMode="contain" 
           />
         </TouchableOpacity>
-        <Text className="text-lg font-bold ml-4">Pulsa & Paket Data</Text>
+        <Text className={`text-lg font-bold ml-4 ${isDarkMode ? 'text-white' : 'text-black'}`}>Pulsa & Paket Data</Text>
       </View>
 
-      <View className="flex-row items-center border border-gray-300 rounded-lg p-2 mb-4">
+      <View className={`flex-row items-center border border-grey rounded-lg p-2 mb-4 ${isDarkMode ? 'bg-grey' : 'bg-white'}`}>
         <TextInput
           placeholder="Masukkan nomor telepon"
-          className="flex-1 text-base p-2"
+          className={`flex-1 text-base p-2 ${isDarkMode ? 'text-white' : 'text-black'}`}
           keyboardType="numeric"
           value={phoneNumber}
           onChangeText={(text) => setPhoneNumber(text)}
@@ -82,13 +85,13 @@ const Pulsa = () => {
       </View>
 
       <View className="flex-1 mt-8">
-        <View className="flex-row bg-gray-200 rounded-md p-4 items-center">
+        <View className={`flex-row rounded-md p-4 items-center ${isDarkMode ? 'bg-gray-800' : 'bg-grey'}`}>
           <Image 
             source={require('../assets/contact-form.png')} 
             className="w-6 h-6 mr-2" 
             resizeMode="contain" 
           />
-          <Text className="flex-1 text-center">
+          <Text className={`flex-1 text-center ${isDarkMode ? 'text-white' : 'text-black'}`}>
             {errorMessage || 'Isi nomor telepon yang valid untuk menampilkan menu pembelian.'}
           </Text>
         </View>

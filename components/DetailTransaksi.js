@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { ThemeContext } from './ThemeContext'; // Import ThemeContext
 
 const DetailTransaksi = ({ route }) => {
-  const { transaction, approvalCode, phoneNumber } = route.params || {}; // Memastikan parameter diterima
-  const [operatorImage, setOperatorImage] = useState(null); // Default null jika tidak ada
+  const { transaction, approvalCode, phoneNumber } = route.params || {};
+  const [operatorImage, setOperatorImage] = useState(null);
   const navigation = useNavigation();
+  const { isDarkMode } = useContext(ThemeContext); // Mendapatkan status dark mode
 
-  // Cek nomor telepon untuk mendapatkan prefix operator
   useEffect(() => {
     if (phoneNumber) {
-      const prefix = phoneNumber.substring(0, 4); // Ambil 4 digit pertama
+      const prefix = phoneNumber.substring(0, 4);
 
       const operatorImages = {
         telkomsel: require('../assets/telkomsel.png'),
@@ -21,7 +22,6 @@ const DetailTransaksi = ({ route }) => {
         smartfren: require('../assets/smartfren.png'),
       };
 
-      // Cek prefix dan set gambar operator
       if (['0811', '0812', '0813', '0821', '0822', '0852', '0853'].includes(prefix)) {
         setOperatorImage(operatorImages.telkomsel);
       } else if (['0814', '0815', '0816', '0855', '0856', '0857', '0858'].includes(prefix)) {
@@ -39,7 +39,7 @@ const DetailTransaksi = ({ route }) => {
   }, [phoneNumber]);
 
   return (
-    <ScrollView className="flex-1 p-4 pt-10 pb-10">
+    <ScrollView className={`flex-1 p-4 pt-10 pb-10 ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
       <View className="flex-row items-center mb-4">
         <TouchableOpacity onPress={() => navigation.navigate('Transaksi')}>
           <Image 
@@ -48,7 +48,7 @@ const DetailTransaksi = ({ route }) => {
             resizeMode="contain" 
           />
         </TouchableOpacity>
-        <Text className="text-lg font-bold ml-4 p-4">Bukti Transaksi</Text>
+        <Text className={`text-lg font-bold ml-4 p-4 ${isDarkMode ? 'text-white' : 'text-black'}`}>Bukti Transaksi</Text>
       </View>
 
       {/* Gambar operator berdasarkan prefix */}
@@ -62,55 +62,67 @@ const DetailTransaksi = ({ route }) => {
         )}
       </View>
       
-      <Text className="text-center font-bold text-lg mb-2">Operator</Text>
-      <Text className="text-center text-black mb-6">
+      <Text className={`text-center font-bold text-lg mb-2 ${isDarkMode ? 'text-white' : 'text-black'}`}>Operator</Text>
+      <Text className={`text-center ${isDarkMode ? 'text-white' : 'text-black'} mb-6`}>
         Nomor: {phoneNumber || 'Tidak tersedia'}
       </Text>
 
       {/* Detail transaksi */}
       <View className="flex-row justify-between mb-4">
-        <Text className="font-bold">TERMINAL</Text>
-        <Text className="mb-2">Success</Text>
+        <Text className={`font-bold ${isDarkMode ? 'text-white' : 'text-black'}`}>TERMINAL</Text>
+        <Text className={`${isDarkMode ? 'text-white' : 'text-black'} mb-2`}>Success</Text>
       </View>
       <View className="flex-row justify-between mb-4">
-        <Text className="font-bold">MERCHANT</Text>
-        <Text className="mb-2">{Math.floor(Math.random() * 100000000000000).toString()}</Text>
+        <Text className={`font-bold ${isDarkMode ? 'text-white' : 'text-black'}`}>MERCHANT</Text>
+        <Text className={`${isDarkMode ? 'text-white' : 'text-black'} mb-2`}>
+          {Math.floor(Math.random() * 100000000000000).toString()}
+        </Text>
       </View>
       <View className="flex-row justify-between mb-4">
-        <Text className="font-bold">JENIS TRANSAKSI</Text>
-        <Text className="mb-2">SALE</Text>
+        <Text className={`font-bold ${isDarkMode ? 'text-white' : 'text-black'}`}>JENIS TRANSAKSI</Text>
+        <Text className={`${isDarkMode ? 'text-white' : 'text-black'} mb-2`}>SALE</Text>
       </View>
       <View className="flex-row justify-between mb-4">
-        <Text className="font-bold">JENIS KARTU</Text>
-        <Text className="mb-2">Kartu UnionPay Credit</Text>
+        <Text className={`font-bold ${isDarkMode ? 'text-white' : 'text-black'}`}>JENIS KARTU</Text>
+        <Text className={`${isDarkMode ? 'text-white' : 'text-black'} mb-2`}>Kartu UnionPay Credit</Text>
       </View>
       <View className="flex-row justify-between mb-4">
-        <Text className="font-bold">NOMOR KARTU</Text>
-        <Text className="mb-2">**********0005</Text>
+        <Text className={`font-bold ${isDarkMode ? 'text-white' : 'text-black'}`}>NOMOR KARTU</Text>
+        <Text className={`${isDarkMode ? 'text-white' : 'text-black'} mb-2`}>**********0005</Text>
       </View>
       <View className="flex-row justify-between mb-4">
-        <Text className="font-bold">TGL. TRANSAKSI</Text>
-        <Text className="mb-2">{transaction ? `${transaction.date}, ${transaction.time}` : 'Tidak tersedia'}</Text>
+        <Text className={`font-bold ${isDarkMode ? 'text-white' : 'text-black'}`}>TGL. TRANSAKSI</Text>
+        <Text className={`${isDarkMode ? 'text-white' : 'text-black'} mb-2`}>
+          {transaction ? `${transaction.date}, ${transaction.time}` : 'Tidak tersedia'}
+        </Text>
       </View>
       <View className="flex-row justify-between mb-4">
-        <Text className="font-bold">BATCH</Text>
-        <Text className="mb-2">{transaction?.trace || 'Tidak tersedia'}</Text>
+        <Text className={`font-bold ${isDarkMode ? 'text-white' : 'text-black'}`}>BATCH</Text>
+        <Text className={`${isDarkMode ? 'text-white' : 'text-black'} mb-2`}>
+          {transaction?.trace || 'Tidak tersedia'}
+        </Text>
       </View>
       <View className="flex-row justify-between mb-4">
-        <Text className="font-bold">TRACE NO</Text>
-        <Text className="mb-2">{transaction?.trace || 'Tidak tersedia'}</Text>
+        <Text className={`font-bold ${isDarkMode ? 'text-white' : 'text-black'}`}>TRACE NO</Text>
+        <Text className={`${isDarkMode ? 'text-white' : 'text-black'} mb-2`}>
+          {transaction?.trace || 'Tidak tersedia'}
+        </Text>
       </View>
       <View className="flex-row justify-between mb-4">
-        <Text className="font-bold">REFERENCE NO</Text>
-        <Text className="mb-2">{`${transaction?.trace || 'Tidak tersedia'}20`}</Text>
+        <Text className={`font-bold ${isDarkMode ? 'text-white' : 'text-black'}`}>REFERENCE NO</Text>
+        <Text className={`${isDarkMode ? 'text-white' : 'text-black'} mb-2`}>
+          {`${transaction?.trace || 'Tidak tersedia'}20`}
+        </Text>
       </View>
       <View className="flex-row justify-between mb-4">
-        <Text className="font-bold">APPROVAL CODE</Text>
-        <Text className="mb-2">{approvalCode || 'Tidak tersedia'}</Text>
+        <Text className={`font-bold ${isDarkMode ? 'text-white' : 'text-black'}`}>APPROVAL CODE</Text>
+        <Text className={`${isDarkMode ? 'text-white' : 'text-black'} mb-2`}>
+          {approvalCode || 'Tidak tersedia'}
+        </Text>
       </View>
       <View className="flex-row justify-between mb-4">
-        <Text className="font-bold">TOTAL</Text>
-        <Text className="mb-2 text-black">
+        <Text className={`font-bold ${isDarkMode ? 'text-white' : 'text-black'}`}>TOTAL</Text>
+        <Text className={`mb-2 ${isDarkMode ? 'text-white' : 'text-black'}`}>
           {transaction?.price ? transaction.price : 'Tidak tersedia'}
         </Text>
       </View>

@@ -83,7 +83,7 @@ const PaymentConfirmation = ({ route, navigation }) => {
   };
 
   return (
-    <View className="flex-1 bg-white p-4 pt-12 items-center">
+    <View className="flex-1 bg-white p-4 items-center">
       <View className="flex-row items-center mb-4">
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image

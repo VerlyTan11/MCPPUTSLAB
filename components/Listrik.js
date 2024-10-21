@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, TextInput, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { ThemeContext } from './ThemeContext'; // Import ThemeContext
 
 const Listrik = () => {
   const navigation = useNavigation();
+  const { isDarkMode } = useContext(ThemeContext); // Mendapatkan status dark mode
   const [customerId, setCustomerId] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [activeOption, setActiveOption] = useState('');
@@ -30,7 +32,7 @@ const Listrik = () => {
   };
 
   return (
-    <View className="flex-1 bg-white p-4 pt-12">
+    <View className={`flex-1 p-4 pt-12 ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
       {/* Header Section */}
       <View className="flex-row items-center mb-4">
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -40,11 +42,11 @@ const Listrik = () => {
             resizeMode="contain" 
           />
         </TouchableOpacity>
-        <Text className="text-lg font-bold ml-4">Isi Listrik</Text>
+        <Text className={`text-lg font-bold ml-4 ${isDarkMode ? 'text-white' : 'text-black'}`}>Isi Listrik</Text>
       </View>
 
       {/* Input Field Section */}
-      <View className="flex-row items-center border border-gray-300 rounded-lg p-2 mb-4">
+      <View className={`flex-row items-center border border-grey rounded-lg p-2 mb-4 ${isDarkMode ? 'bg-grey' : 'bg-white'}`}>
         <TextInput
           placeholder="Masukkan ID Pelanggan"
           className="flex-1 text-base p-2"
@@ -60,11 +62,9 @@ const Listrik = () => {
       </View>
 
       {/* Menu Section */}
-      <View className="mt-4 flex-row justify-center space-x-4 bg-default-blue">
+      <View className= "mt-4 flex-row justify-center space-x-4 bg-default-blue">
         <TouchableOpacity
-          className={`flex-1 max-w-[45%] rounded-lg p-4 items-center $ {
-            activeOption === 'listrik' ? 'bg-default-blue' : 'bg-grey'
-          }`}
+          className="flex-1 max-w-[45%] rounded-lg p-4 items-center bg-default-blue"
           onPress={() => handleOptionPress('listrik')}
         >
           <Text className="text-white text-lg">Isi Listrik</Text>
@@ -72,24 +72,24 @@ const Listrik = () => {
       </View>
 
       <View className="flex-1 mt-8">
-        <View className="flex-row bg-grey rounded-md p-4 items-center">
+        <View className={`flex-row rounded-md p-4 items-center ${isDarkMode ? 'bg-gray-800' : 'bg-grey'}`}>
           <Image 
             source={require('../assets/contact-form.png')} 
             className="w-6 h-6 mr-2" 
             resizeMode="contain" 
           />
-          <Text className="flex-1 text-center">
+          <Text className={`flex-1 text-center ${isDarkMode ? 'text-white' : 'text-black'}`}>
             {errorMessage || 'Isi ID Pelanggan yang valid untuk menampilkan menu pembelian.'}
           </Text>
         </View>
 
         {activeOption === 'listrik' && (
           <View className="mt-8">
-            <View className="flex-row justify-around bg-gray-100 p-4 rounded-lg">
+            <View className={`flex-row justify-around bg-gray-100 p-4 rounded-lg ${isDarkMode ? 'bg-gray-600' : 'bg-gray-100'}`}>
               <OptionItem label="20.000" price="Rp. 20.000" onPress={goToPaymentConfirmation} />
               <OptionItem label="50.000" price="Rp. 50.000" onPress={goToPaymentConfirmation} />
             </View>
-            <View className="flex-row justify-around bg-gray-100 p-4 rounded-lg">
+            <View className={`flex-row justify-around bg-gray-100 p-4 rounded-lg ${isDarkMode ? 'bg-gray-600' : 'bg-gray-100'}`}>
               <OptionItem label="100.000" price="Rp. 100.000" onPress={goToPaymentConfirmation} />
               <OptionItem label="200.000" price="Rp. 200.000" onPress={goToPaymentConfirmation} />
             </View>

@@ -1,7 +1,8 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useContext } from 'react';
 import { View, Text, Image, Dimensions, TouchableOpacity } from 'react-native';
 import PagerView from 'react-native-pager-view';
 import { useNavigation } from '@react-navigation/native';
+import { ThemeContext } from './ThemeContext'; // Import ThemeContext
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -15,6 +16,7 @@ const Body = () => {
   const navigation = useNavigation();
   const [currentPage, setCurrentPage] = useState(0);
   const pagerRef = useRef(null);
+  const { isDarkMode } = useContext(ThemeContext); // Mengakses status dark mode
 
   // Function to handle auto-slide
   useEffect(() => {
@@ -36,12 +38,14 @@ const Body = () => {
         className="w-full h-40"
         resizeMode="contain"
       />
-      <Text className="text-lg mt-2">{item.caption}</Text>
+      <Text className={`text-lg mt-2 ${isDarkMode ? 'text-white' : 'text-black'}`}>
+        {item.caption}
+      </Text>
     </View>
   );
 
   return (
-    <View className="flex-1 m-4 mt-10">
+    <View className={`flex-1 m-4 mt-10 ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
       {/* Section dengan tiga icon */}
       <View className="flex-row justify-evenly pb-6">
         <TouchableOpacity
@@ -53,7 +57,7 @@ const Body = () => {
             className="w-8 h-8 bg-grey rounded-md"
             resizeMode="contain"
           />
-          <Text>Pulsa/Data</Text>
+          <Text className={`${isDarkMode ? 'text-white' : 'text-black'}`}>Pulsa/Data</Text>
         </TouchableOpacity>
         <TouchableOpacity // Tambahkan TouchableOpacity untuk navigasi Listrik
           className="items-center"
@@ -64,7 +68,7 @@ const Body = () => {
             className="w-8 h-8 bg-grey rounded-md"
             resizeMode="contain"
           />
-          <Text>Listrik</Text>
+          <Text className={`${isDarkMode ? 'text-white' : 'text-black'}`}>Listrik</Text>
         </TouchableOpacity>
         <TouchableOpacity // Tambahkan TouchableOpacity untuk navigasi BPJS
           className="items-center"
@@ -75,12 +79,12 @@ const Body = () => {
             className="w-8 h-8 bg-grey rounded-md"
             resizeMode="contain"
           />
-          <Text>BPJS</Text>
+          <Text className={`${isDarkMode ? 'text-white' : 'text-black'}`}>BPJS</Text>
         </TouchableOpacity>
       </View>
 
       {/* PagerView/Slider Section */}
-      <View className="bg-grey p-4 rounded-lg">
+      <View className={`p-4 rounded-lg ${isDarkMode ? 'bg-gray-800' : 'bg-grey'}`}>
         <PagerView
           ref={pagerRef}
           style={{ width: screenWidth - 60, height: 200 }}
